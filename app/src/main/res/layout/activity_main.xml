@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_gradient">
+
+    <!-- Изображение -->
+    <ImageView
+            android:id="@+id/imageViewPng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/a"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/png"/>
+
+    <!-- Кнопка "Left" -->
+    <Button
+            android:id="@+id/btnLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/leftBtnTitle"
+            android:layout_below="@id/imageViewPng"
+            android:layout_toStartOf="@id/btnSound"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp" />
+
+    <!-- Кнопка "Sound" -->
+    <Button
+            android:id="@+id/btnSound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/play"
+            android:layout_below="@id/imageViewPng"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp" />
+
+    <!-- Кнопка "Right" -->
+    <Button
+            android:id="@+id/btnRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rightBtnTitle"
+            android:layout_below="@id/imageViewPng"
+            android:layout_toEndOf="@id/btnSound"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp" />
+
+</RelativeLayout>

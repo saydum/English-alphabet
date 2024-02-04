@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">English alphabet</string>
+    <string name="png">png</string>
+    <string name="leftBtnTitle"><![CDATA[<--]]></string>
+    <string name="play">Play</string>
+    <string name="rightBtnTitle"><![CDATA[-->]]></string>
+</resources>
