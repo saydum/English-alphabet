@@ -1,10 +1,10 @@
 package com.englishalphabet;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 
 import java.util.ArrayList;
 
@@ -12,10 +12,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView imageView;
     private int currentIndex = 0;
-//    private Button playButton;
 
-    private final ArrayList<Integer> imageResource = new ArrayList<>();
+    private final  ArrayList<Letter> letters = new ArrayList<>();
 
+    private SoundPlayer soundPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,35 +25,38 @@ public class MainActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imageViewPng);
         Button btnLeft = findViewById(R.id.btnLeft);
         Button btnRight = findViewById(R.id.btnRight);
+        Button btnPlaySound = findViewById(R.id.btnPlaySound);
 
-        imageResource.add(R.drawable.a);
-        imageResource.add(R.drawable.b);
-        imageResource.add(R.drawable.c);
-        imageResource.add(R.drawable.d);
-        imageResource.add(R.drawable.e);
-        imageResource.add(R.drawable.f);
-        imageResource.add(R.drawable.g);
-        imageResource.add(R.drawable.h);
-        imageResource.add(R.drawable.i);
-        imageResource.add(R.drawable.j);
-        imageResource.add(R.drawable.k);
-        imageResource.add(R.drawable.l);
-        imageResource.add(R.drawable.m);
-        imageResource.add(R.drawable.n);
-        imageResource.add(R.drawable.o);
-        imageResource.add(R.drawable.p);
-        imageResource.add(R.drawable.q);
-        imageResource.add(R.drawable.r);
-        imageResource.add(R.drawable.s);
-        imageResource.add(R.drawable.t);
-        imageResource.add(R.drawable.u);
-        imageResource.add(R.drawable.v);
-        imageResource.add(R.drawable.w);
-        imageResource.add(R.drawable.x);
-        imageResource.add(R.drawable.y);
-        imageResource.add(R.drawable.z);
+        soundPlayer = new SoundPlayer();
 
-        imageView.setImageResource(imageResource.get(currentIndex));
+        letters.add(new Letter(R.drawable.a, R.raw.a));
+        letters.add(new Letter(R.drawable.b, R.raw.b));
+        letters.add(new Letter(R.drawable.c, R.raw.c));
+        letters.add(new Letter(R.drawable.d, R.raw.d));
+        letters.add(new Letter(R.drawable.e, R.raw.e));
+        letters.add(new Letter(R.drawable.f, R.raw.f));
+        letters.add(new Letter(R.drawable.g, R.raw.g));
+        letters.add(new Letter(R.drawable.h, R.raw.h));
+        letters.add(new Letter(R.drawable.i, R.raw.i));
+        letters.add(new Letter(R.drawable.j, R.raw.j));
+        letters.add(new Letter(R.drawable.k, R.raw.k));
+        letters.add(new Letter(R.drawable.l, R.raw.l));
+        letters.add(new Letter(R.drawable.m, R.raw.m));
+        letters.add(new Letter(R.drawable.n, R.raw.n));
+        letters.add(new Letter(R.drawable.o, R.raw.o));
+        letters.add(new Letter(R.drawable.p, R.raw.p));
+        letters.add(new Letter(R.drawable.q, R.raw.q));
+        letters.add(new Letter(R.drawable.r, R.raw.r));
+        letters.add(new Letter(R.drawable.s, R.raw.s));
+        letters.add(new Letter(R.drawable.t, R.raw.t));
+        letters.add(new Letter(R.drawable.u, R.raw.u));
+        letters.add(new Letter(R.drawable.v, R.raw.v));
+        letters.add(new Letter(R.drawable.w, R.raw.w));
+        letters.add(new Letter(R.drawable.x, R.raw.x));
+        letters.add(new Letter(R.drawable.y, R.raw.y));
+        letters.add(new Letter(R.drawable.z, R.raw.z));
+
+        imageView.setImageResource(letters.get(currentIndex).getImageResource());
 
         btnLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 if (currentIndex > 0) {
                     currentIndex--;
                 } else {
-                    currentIndex = imageResource.size() - 1;
+                    currentIndex = letters.size() - 1;
                 }
                 updateImage();
             }
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         btnRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentIndex < imageResource.size() - 1) {
+                if (currentIndex < letters.size() - 1) {
                     currentIndex++;
                 } else {
                     currentIndex = 0;
@@ -79,8 +82,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        btnPlaySound.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playSound();
+            }
+        });
     }
 
-    private void updateImage() { imageView.setImageResource(imageResource.get(currentIndex)); }
+    private void updateImage() { imageView.setImageResource(letters.get(currentIndex).getImageResource()); }
+
+    private void playSound() { soundPlayer.playSound(this, letters.get(currentIndex).getSoundResource()); }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        soundPlayer.stopSound();
+    }
 }
