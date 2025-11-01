@@ -2,19 +2,15 @@ package com.englishalphabet;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.GridLayout;
+import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView imageView;
-    private int currentIndex = 0;
-
-    private final  ArrayList<Letter> letters = new ArrayList<>();
-
+    private final ArrayList<Letter> letters = new ArrayList<>();
     private SoundPlayer soundPlayer;
 
     @Override
@@ -22,11 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imageView = findViewById(R.id.imageViewPng);
-        Button btnLeft = findViewById(R.id.btnLeft);
-        Button btnRight = findViewById(R.id.btnRight);
-        Button btnPlaySound = findViewById(R.id.btnPlaySound);
-
+        GridLayout gridLetters = findViewById(R.id.gridLetters);
         soundPlayer = new SoundPlayer();
 
         letters.add(new Letter(R.drawable.a, R.raw.a));
@@ -56,43 +48,47 @@ public class MainActivity extends AppCompatActivity {
         letters.add(new Letter(R.drawable.y, R.raw.y));
         letters.add(new Letter(R.drawable.z, R.raw.z));
 
-        imageView.setImageResource(letters.get(currentIndex).getImageResource());
+        for (int i = 0; i < letters.size(); i++) {
+            final int index = i;
+            ImageButton button = new ImageButton(this);
+            button.setImageResource(letters.get(i).getImageResource());
+            button.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+            button.setScaleType(ImageButton.ScaleType.CENTER_INSIDE);
+            button.setAdjustViewBounds(true);
+            button.setPadding(6, 6, 6, 6);
 
-        btnLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                } else {
-                    currentIndex = letters.size() - 1;
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            params.width = 0;
+            params.height = 0;
+            params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+            params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+            button.setLayoutParams(params);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    soundPlayer.playSound(MainActivity.this, letters.get(index).getSoundResource());
+                    v.animate()
+                        .scaleX(1.2f)
+                        .scaleY(1.2f)
+                        .setDuration(150)
+                        .withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                v.animate()
+                                        .scaleX(1f)
+                                        .scaleY(1f)
+                                        .setDuration(150)
+                                        .start();
+                            }
+                        })
+                        .start()
+                    ;
                 }
-                updateImage();
-            }
-        });
-
-        btnRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (currentIndex < letters.size() - 1) {
-                    currentIndex++;
-                } else {
-                    currentIndex = 0;
-                }
-                updateImage();
-            }
-        });
-
-        btnPlaySound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playSound();
-            }
-        });
+            });
+            gridLetters.addView(button);
+        }
     }
-
-    private void updateImage() { imageView.setImageResource(letters.get(currentIndex).getImageResource()); }
-
-    private void playSound() { soundPlayer.playSound(this, letters.get(currentIndex).getSoundResource()); }
 
     @Override
     protected void onStop() {

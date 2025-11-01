@@ -11,11 +11,26 @@ public class SoundPlayer {
         stopSound();
 
         mediaPlayer = MediaPlayer.create(context, soundResource);
-        mediaPlayer.start();
+        if (mediaPlayer != null) {
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    stopSound();
+                }
+            });
+            mediaPlayer.start();
+        }
     }
 
     public void stopSound() {
         if (mediaPlayer != null) {
+            try {
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                }
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
             mediaPlayer.release();
             mediaPlayer = null;
         }
