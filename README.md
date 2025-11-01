@@ -1,7 +1,7 @@
 # English alphabet
 English alphabet android application with play voice
 
-![](screenshot/main.jpg)
+![](screenshot/main.png)
 
 
 ## Abouts
