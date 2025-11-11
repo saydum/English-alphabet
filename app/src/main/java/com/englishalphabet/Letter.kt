@@ -1,4 +1,4 @@
-package com.englishalphabet;
+package com.englishalphabet
 
 data class Letter(
         var imageResource: Int,
