@@ -1,38 +1,35 @@
-package com.englishalphabet;
+package com.englishalphabet
 
-import android.content.Context;
-import android.media.MediaPlayer;
+import android.content.Context
+import android.media.MediaPlayer
 
-public class SoundPlayer {
+class SoundPlayer {
 
-    private MediaPlayer mediaPlayer;
+    private var mediaPlayer: MediaPlayer? = null
 
-    public void playSound(Context context, int soundResource) {
-        stopSound();
+    fun playSound(context: Context, soundResource: Int) {
+        stopSound()
 
-        mediaPlayer = MediaPlayer.create(context, soundResource);
-        if (mediaPlayer != null) {
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    stopSound();
-                }
-            });
-            mediaPlayer.start();
+        mediaPlayer = MediaPlayer.create(context, soundResource)?.apply {
+            setOnCompletionListener {
+                stopSound()
+            }
+            start()
         }
     }
 
-    public void stopSound() {
-        if (mediaPlayer != null) {
+    fun stopSound() {
+        mediaPlayer?.let { player ->
             try {
-                if (mediaPlayer.isPlaying()) {
-                    mediaPlayer.stop();
+                if (player.isPlaying) {
+                    player.stop()
                 }
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
+            } catch (e: IllegalStateException) {
+                e.printStackTrace()
+            } finally {
+                player.release()
+                mediaPlayer = null
             }
-            mediaPlayer.release();
-            mediaPlayer = null;
         }
     }
 }
